@@ -6,11 +6,12 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "mock": "cd mock && ts-node-dev mock-server.ts"
+    "mock": "npm link morgan && npm link faker && npm link yamljs && npm link cors && cd mock && ts-node-dev mock-server.ts"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@types/yamljs": "^0.2.31",
+    "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",

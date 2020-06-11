@@ -1,20 +1,20 @@
 <template>
   <div class="home">
     <Logo />
-    <MoviesTable />
+    <MediaTable />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import Logo from '@/components/Logo';
-import MoviesTable from '@/components/MoviesTable.vue';
+import MediaTable from '@/components/MediaTable.vue';
 
 export default {
   name: 'Home',
   components: {
     Logo,
-    MoviesTable,
+    MediaTable,
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <img alt="Logo" max-width="256px" src="@/assets/logo.png" />
-    <h2>Movies Databsase</h2>
+    <h2>Media</h2>
   </v-container>
 </template>
 
