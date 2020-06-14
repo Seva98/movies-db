@@ -1,30 +1,17 @@
-import { IMediaData } from './types.d';
+import { IMediaData, IServerResponse } from './types.d';
 import axios, { AxiosResponse } from 'axios';
-
-interface IServerResponse {
-  config: Object;
-  headers: Object;
-  request: Object;
-  status: number;
-  statusText: string;
-  data: {
-    code: number;
-    data: {
-      total: number;
-      items: IMediaData[];
-    };
-    items: IMediaData[];
-  };
-}
-
-// export abstract class MediaApi {
-//   private static mediaApi = axios.create();
-
-//   static async getAllMedia() {}
-// }
 
 export default class ApiClient {
   private url: string = 'http://localhost:9528/api/v1/media';
+
+  public defaultMedia: IMediaData = {
+    guid: '',
+    title: '',
+    type: '',
+    kind: '',
+    number_of_discs: 1,
+    release_year: 2020,
+  };
 
   public async getAllMedia(): Promise<IMediaData[]> {
     const response: AxiosResponse<IServerResponse> = await axios.get<IServerResponse>(this.url);

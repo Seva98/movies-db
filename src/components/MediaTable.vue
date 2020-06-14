@@ -54,20 +54,19 @@
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>
   </v-data-table>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
 import ApiClient from '../api/client';
+import { IMediaData } from '../api/types';
 
-@Component
+@Component({
+  name: 'MoviesTable',
+})
 export default class MoviesTable extends Vue {
-  data = '';
   search = '';
   headers = [
     {
@@ -92,18 +91,10 @@ export default class MoviesTable extends Vue {
     },
     { text: 'Actions', value: 'actions', sortable: false },
   ];
-  media = [
-    {
-      title: 'Doom: Eternal',
-      type: 'BlueRay',
-      kind: 'Game',
-      number_of_discs: 1,
-      release_year: 2020,
-    },
-  ];
+  media: IMediaData[] = [];
 
   editedIndex = -1;
-  editedMedia = {
+  editedMedia: IMediaData = {
     guid: '',
     title: '',
     type: '',
@@ -123,13 +114,13 @@ export default class MoviesTable extends Vue {
     this.media = await this.apiClient.getAllMedia();
   }
 
-  async editItem(item) {
+  async editItem(item: IMediaData) {
     this.editedIndex = this.media.indexOf(item);
     this.editedMedia = Object.assign({}, item);
     this.dialog = true;
   }
 
-  async deleteItem(item) {
+  async deleteItem(item: IMediaData) {
     try {
       await this.apiClient.deleteItem(item);
       const indexToDelete = this.media.findIndex((m) => m.guid === item.guid);
