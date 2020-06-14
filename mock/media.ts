@@ -33,6 +33,7 @@ export const getMedias = (req: Request, res: Response) => {
 
   return res.json({
     code: 200,
+    items: mockList,
     data: {
       total: mockList.length,
       items: mockList,

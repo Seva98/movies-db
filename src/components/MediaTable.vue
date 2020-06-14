@@ -63,6 +63,7 @@
 <script>
 import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
+import ApiClient from '../api/client';
 
 @Component
 export default class MoviesTable extends Vue {
@@ -112,13 +113,14 @@ export default class MoviesTable extends Vue {
   };
   dialog = false;
 
+  apiClient = new ApiClient();
+
   get formTitle() {
     return this.editedIndex === -1 ? 'New Media' : 'Edit Media';
   }
 
   async mounted() {
-    const data = await axios.get('http://localhost:9528/api/v1/media');
-    this.media = data.data.data.items;
+    this.media = await this.apiClient.getAllMedia();
   }
 
   async editItem(item) {
@@ -129,7 +131,7 @@ export default class MoviesTable extends Vue {
 
   async deleteItem(item) {
     try {
-      await axios.delete(`http://localhost:9528/api/v1/media/${item.guid}`);
+      await this.apiClient.deleteItem(item);
       const indexToDelete = this.media.findIndex((m) => m.guid === item.guid);
       if (indexToDelete > -1) this.media.splice(indexToDelete, 1);
     } catch (error) {
@@ -144,10 +146,10 @@ export default class MoviesTable extends Vue {
   async save() {
     try {
       if (this.editedIndex > -1) {
-        await axios.put(`http://localhost:9528/api/v1/media/${this.editedMedia.guid}`, this.editedMedia);
+        await this.apiClient.updateItem(this.editedMedia);
         this.media.splice(this.editedIndex, 1, this.editedMedia);
       } else {
-        axios.post('http://localhost:9528/api/v1/media/', this.editedMedia);
+        await this.apiClient.createItem(this.editedMedia);
         this.media.push(this.editedMedia);
       }
     } catch (error) {
