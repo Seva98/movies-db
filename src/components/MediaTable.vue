@@ -58,13 +58,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Inject } from 'vue-property-decorator';
 import axios from 'axios';
 import ApiClient from '../api/client';
 import { IMediaData } from '../api/types';
 
 @Component({
   name: 'MoviesTable',
+  inject: ['mediaApi'],
 })
 export default class MoviesTable extends Vue {
   search = '';
@@ -104,14 +105,12 @@ export default class MoviesTable extends Vue {
   };
   dialog = false;
 
-  apiClient = new ApiClient();
-
   get formTitle() {
     return this.editedIndex === -1 ? 'New Media' : 'Edit Media';
   }
 
   async mounted() {
-    this.media = await this.apiClient.getAllMedia();
+    this.media = await this.mediaApi.getAllMedia();
   }
 
   async editItem(item: IMediaData) {
@@ -122,7 +121,7 @@ export default class MoviesTable extends Vue {
 
   async deleteItem(item: IMediaData) {
     try {
-      await this.apiClient.deleteItem(item);
+      await this.mediaApi.deleteItem(item);
       const indexToDelete = this.media.findIndex((m) => m.guid === item.guid);
       if (indexToDelete > -1) this.media.splice(indexToDelete, 1);
     } catch (error) {
@@ -137,10 +136,10 @@ export default class MoviesTable extends Vue {
   async save() {
     try {
       if (this.editedIndex > -1) {
-        await this.apiClient.updateItem(this.editedMedia);
+        await this.mediaApi.updateItem(this.editedMedia);
         this.media.splice(this.editedIndex, 1, this.editedMedia);
       } else {
-        await this.apiClient.createItem(this.editedMedia);
+        await this.mediaApi.createItem(this.editedMedia);
         this.media.push(this.editedMedia);
       }
     } catch (error) {
