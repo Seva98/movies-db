@@ -34,7 +34,7 @@
                   </v-col>
                 </v-row>
               </v-container>
-              <p v-if="error">{{ error }}</p>
+              <p v-if="error" style="color:red">{{ error }}</p>
             </v-card-text>
 
             <v-card-actions>
