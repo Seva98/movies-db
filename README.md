@@ -1,13 +1,14 @@
 # Vue 2 + TypeScript + Vuetify + Mock API example
 
-Simple Typescript Vue application utilizing full functionaly of Vuetify v-data-table component using.
+Simple Typescript Vue application utilizing full functionaly of Vuetify v-data-table component.
 
 App also includes simple examples of Vue Router and Vuex.
 
 ## Prepare project
 
-1. Clone project `git clone git@github.com:Seva98/movies-db.git`
-2. Install dependencies `npm install`
+1. Clone project `git clone git@github.com:Seva98/movies-db.git media-db`
+2. Change directory `cd media-db`
+3. Install dependencies `npm install`
 
 ## Run project
 
