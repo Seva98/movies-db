@@ -153,7 +153,7 @@ export default class MediaTable extends Vue {
   }
 
   @Watch('dialog')
-  onDialogChange(newDialog: bool) {
+  onDialogChange(newDialog: Boolean) {
     if (!newDialog) this.resetDialog();
   }
 
