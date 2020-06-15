@@ -2,8 +2,7 @@
   <v-data-table :headers="headers" :items="media" :search="search" data-app>
     <template v-slot:top>
       <v-toolbar flat color="white">
-        <v-toolbar-title>Media</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
+        <v-toolbar-title>{{ appName }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
         <v-dialog v-model="dialog" max-width="500px">
@@ -58,16 +57,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Inject } from 'vue-property-decorator';
-import axios from 'axios';
-import ApiClient from '../api/client';
+import { Component, Vue } from 'vue-property-decorator';
 import { IMediaData } from '../api/types';
+import { AppModule } from '../store/modules/app';
 
 @Component({
   name: 'MoviesTable',
   inject: ['mediaApi'],
 })
-export default class MoviesTable extends Vue {
+export default class MediaTable extends Vue {
   search = '';
   headers = [
     {
@@ -105,11 +103,14 @@ export default class MoviesTable extends Vue {
   };
   dialog = false;
 
+  appName = '';
+
   get formTitle() {
     return this.editedIndex === -1 ? 'New Media' : 'Edit Media';
   }
 
   async mounted() {
+    this.appName = AppModule.name;
     this.media = await this.mediaApi.getAllMedia();
   }
 

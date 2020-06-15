@@ -1,20 +1,17 @@
 <template>
-  <div class="home">
-    <Logo />
+  <div>
     <MediaTable />
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import Logo from '@/components/Logo';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import MediaTable from '@/components/MediaTable.vue';
-
-export default {
+@Component({
   name: 'Home',
   components: {
-    Logo,
     MediaTable,
   },
-};
+})
+export default class Home extends Vue {}
 </script>

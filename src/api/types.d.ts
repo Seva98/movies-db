@@ -21,3 +21,11 @@ export interface IServerResponse {
     items: IMediaData[];
   };
 }
+
+export interface IApiClient {
+  defaultMedia: IMediaData;
+  getAllMedia: () => Promise<IMediaData>;
+  createItem: (media: IMediaData) => Promise<void>;
+  updateItem: (media: IMediaData) => Promise<void>;
+  deleteItem: (media: IMediaData) => Promise<void>;
+}

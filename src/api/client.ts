@@ -1,7 +1,7 @@
-import { IMediaData, IServerResponse } from './types.d';
+import { IApiClient, IMediaData, IServerResponse } from './types.d';
 import axios, { AxiosResponse } from 'axios';
 
-export default class ApiClient {
+export default class ApiClient implements IApiClient {
   private url: string = 'http://localhost:9528/api/v1/media';
 
   public defaultMedia: IMediaData = {
@@ -28,10 +28,7 @@ export default class ApiClient {
     }
   }
 
-  public async updateItem(media: IMediaData) {
-    console.log(media);
-    console.log(media.guid);
-    console.log(`${this.url}/${media.guid}`);
+  public async updateItem(media: IMediaData): Promise<void> {
     try {
       await axios.put(`${this.url}/${media.guid}`, media);
     } catch (error) {
