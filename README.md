@@ -19,4 +19,4 @@ App also includes simple examples of Vue Router and Vuex.
 
 1. Change depency injection to [InversifyJS](http://inversify.io) instead of using built in Vue's inject function which doesn't work well with TypeScript
 2. Refactor MediaTable to multiple components
-3. Modify the mock API so it return more descriptive error messages
+3. Modify the mock API so it returns more descriptive error messages
