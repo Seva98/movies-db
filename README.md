@@ -4,6 +4,10 @@ Simple Typescript Vue application utilizing full functionaly of Vuetify v-data-t
 
 App also includes simple examples of Vue Router and Vuex.
 
+## Requirements
+
+1. [vue-cli-service](https://cli.vuejs.org/guide/cli-service.html#using-the-binary)
+
 ## Prepare project
 
 1. Clone project `git clone git@github.com:Seva98/movies-db.git media-db`
