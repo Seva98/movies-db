@@ -5,7 +5,7 @@
         <v-toolbar-title>{{ appName }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialog" max-width="500px" @click:outside="close">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">New Media</v-btn>
           </template>
@@ -34,6 +34,7 @@
                   </v-col>
                 </v-row>
               </v-container>
+              <p v-if="error">{{ error }}</p>
             </v-card-text>
 
             <v-card-actions>
@@ -57,13 +58,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { IMediaData } from '../api/types';
 import { AppModule } from '../store/modules/app';
 
 @Component({
   name: 'MoviesTable',
-  inject: ['mediaApi'],
+  inject: ['$mediaApi'],
 })
 export default class MediaTable extends Vue {
   search = '';
@@ -102,7 +103,7 @@ export default class MediaTable extends Vue {
     release_year: 2020,
   };
   dialog = false;
-
+  error = '';
   appName = '';
 
   get formTitle() {
@@ -111,7 +112,7 @@ export default class MediaTable extends Vue {
 
   async mounted() {
     this.appName = AppModule.name;
-    this.media = await this.mediaApi.getAllMedia();
+    this.media = await this.$mediaApi.getAllMedia();
   }
 
   async editItem(item: IMediaData) {
@@ -122,31 +123,38 @@ export default class MediaTable extends Vue {
 
   async deleteItem(item: IMediaData) {
     try {
-      await this.mediaApi.deleteItem(item);
+      await this.$mediaApi.deleteItem(item);
       const indexToDelete = this.media.findIndex((m) => m.guid === item.guid);
       if (indexToDelete > -1) this.media.splice(indexToDelete, 1);
     } catch (error) {
+      this.error = error;
       console.error(error);
     }
   }
 
   close() {
-    this.resetDialog();
+    this.dialog = false;
   }
 
   async save() {
     try {
       if (this.editedIndex > -1) {
-        await this.mediaApi.updateItem(this.editedMedia);
+        const response = await this.$mediaApi.updateItem(this.editedMedia);
         this.media.splice(this.editedIndex, 1, this.editedMedia);
       } else {
-        await this.mediaApi.createItem(this.editedMedia);
+        await this.$mediaApi.createItem(this.editedMedia);
         this.media.push(this.editedMedia);
       }
+      this.dialog = false;
     } catch (error) {
+      this.error = error;
       console.error(error);
     }
-    this.resetDialog();
+  }
+
+  @Watch('dialog')
+  onDialogChange(newDialog: bool) {
+    if (!newDialog) this.resetDialog();
   }
 
   resetDialog() {
@@ -159,7 +167,7 @@ export default class MediaTable extends Vue {
       release_year: 2020,
     };
     this.editedIndex = -1;
-    this.dialog = false;
+    this.error = '';
   }
 }
 </script>

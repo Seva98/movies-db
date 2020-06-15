@@ -1,3 +1,4 @@
+import { IMediaData } from './../src/api/types.d';
 import faker from 'faker';
 import { Response, Request } from 'express';
 import { IMediaData } from '../src/api/types';
@@ -62,18 +63,33 @@ export const getMedia = (req: Request, res: Response) => {
 export const createMedia = (req: Request, res: Response) => {
   const { body } = req;
   body.guid = randomGuid();
-  mediaList.push(body);
-  return res.json({
-    code: 200,
-    data: {
-      body,
-    },
-  });
+  const error = validate(body);
+  if (error) {
+    return res.status(400).send({
+      code: 400,
+      message: error,
+    });
+  } else {
+    mediaList.push(body);
+    return res.json({
+      code: 200,
+      data: {
+        body,
+      },
+    });
+  }
 };
 
 export const updateMedia = (req: Request, res: Response) => {
   const { guid } = req.params;
   const { body } = req;
+  const error = validate(body);
+  if (error) {
+    return res.status(400).send({
+      code: 400,
+      message: error,
+    });
+  }
   const indexToEdit = mediaList.findIndex((m) => m.guid === guid);
   if (indexToEdit > -1) {
     mediaList.splice(indexToEdit, 1, body);
@@ -106,3 +122,13 @@ export const deleteMedia = (req: Request, res: Response) => {
     });
   }
 };
+
+function validate(body: IMediaData): string {
+  let error: string[] = [];
+  if (!('title' in body) || body.title === '') error.push('Title is missing');
+  if (!('type' in body) || body.type === '') error.push('Type is missing');
+  if (!('kind' in body) || body.kind === '') error.push('Kind is missing');
+  if (!('number_of_discs' in body) || isNaN(body.number_of_discs) || body.number_of_discs < 0) error.push('Number of discs is incorrect');
+  if (!('release_year' in body) || isNaN(body.release_year) || body.release_year < 1889) error.push('Release year needs to be larger than 1890'); // Oldest vinyl record date
+  return error.join('\n');
+}

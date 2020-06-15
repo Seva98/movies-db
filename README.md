@@ -1,29 +1,21 @@
-# ts-example
+# Vue 2 + TypeScript + Vuetify + Mock API example
 
-## Project setup
-```
-yarn install
-```
+Simple Typescript Vue application utilizing full functionaly of Vuetify v-data-table component using.
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+App also includes simple examples of Vue Router and Vuex.
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+## Prepare project
 
-### Run your tests
-```
-yarn run test
-```
+1. Clone project `git clone git@github.com:Seva98/movies-db.git`
+2. Install dependencies `npm install`
 
-### Lints and fixes files
-```
-yarn run lint
-```
+## Run project
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+1. Start mock API `npm run mock`
+2. Start app on localhost `npm run start`
+
+## Possible future improvements
+
+1. Change depency injection to [InversifyJS](http://inversify.io) instead of using built in Vue's inject function which doesn't work well with TypeScript
+2. Refactor MediaTable to multiple components
+3. Modify the mock API so it return more descriptive error messages

@@ -14,6 +14,6 @@ new Vue({
   vuetify,
   render: (h) => h(App),
   provide() {
-    return { mediaApi: new ApiClient() };
+    return { $mediaApi: new ApiClient() };
   },
 }).$mount('#app');
